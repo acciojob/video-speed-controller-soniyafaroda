@@ -1,56 +1,53 @@
-const video = document.querySelector('.viewer');
-const playButton = document.querySelector('.toggle');
+const video = document.querySelector('.player__video');
+const playBtn = document.querySelector('.toggle');
 const volumeSlider = document.getElementById('volume');
 const speedSlider = document.getElementById('playbackSpeed');
-const rewindButton = document.querySelector('.rewind');
-const forwardButton = document.querySelector('.forward');
+const rewindBtn = document.querySelector('.rewind');
+const forwardBtn = document.querySelector('.forward');
 const progress = document.querySelector('.progress');
 const progressFilled = document.querySelector('.progress__filled');
 
-// Play / Pause toggle
+// Toggle play/pause
 function togglePlay() {
     if (video.paused) {
         video.play();
-        playButton.textContent = "❚❚";
+        playBtn.textContent = "❚❚";
     } else {
         video.pause();
-        playButton.textContent = "►";
+        playBtn.textContent = "►";
     }
 }
 
 // Update progress bar
-function handleProgress() {
+function updateProgressBar() {
     const percent = (video.currentTime / video.duration) * 100;
     progressFilled.style.width = percent + "%";
 }
 
-// Scrub video when clicking progress bar
+// Click on progress bar to seek
 function scrub(e) {
-    const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
-    video.currentTime = scrubTime;
+    const seekTime = (e.offsetX / progress.offsetWidth) * video.duration;
+    video.currentTime = seekTime;
 }
 
-// Update volume
+// Volume + Speed controls
 volumeSlider.addEventListener("input", () => {
     video.volume = volumeSlider.value;
 });
-
-// Update playback speed
 speedSlider.addEventListener("input", () => {
     video.playbackRate = speedSlider.value;
 });
 
 // Skip buttons
-rewindButton.addEventListener("click", () => {
+rewindBtn.addEventListener("click", () => {
     video.currentTime -= 10;
 });
-
-forwardButton.addEventListener("click", () => {
+forwardBtn.addEventListener("click", () => {
     video.currentTime += 25;
 });
 
-// Event listeners
-playButton.addEventListener("click", togglePlay);
+// Listeners
+playBtn.addEventListener("click", togglePlay);
 video.addEventListener("click", togglePlay);
-video.addEventListener("timeupdate", handleProgress);
+video.addEventListener("timeupdate", updateProgressBar);
 progress.addEventListener("click", scrub);
